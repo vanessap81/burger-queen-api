@@ -1,88 +1,85 @@
-# Primeros pasos
+# Primeiros Passos
 
-Una vez creado tu fork y clonado el repo en tu computadora, antes de poder
-comenzar a codear, tenemos primero que crear nuestro _entorno de desarrollo_.
-Para ello te recomendamos seguir los pasos a continuación:
+Depois de criar seu fork e clonar o repositório em seu computador, antes de começar a codificar, primeiro precisamos criar nosso _ambiente de desenvolvimento_. Para isso, recomendamos seguir os passos abaixo:
 
-* [1. Elegir base de datos](#1-elegir-base-de-datos)
-* [2. Instalar `docker` y `docker-compose`](#2-instalar-docker-y-docker-compose)
-* [3. Configurar "servicio" de base de datos](#3-configurar-servicio-de-base-de-datos)
-* [4. Configurar conexión a BBDD en "servicio" node](#4-configurar-conexión-a-bbdd-en-servicio-node)
-* [5. Elegir módulo (cliente)](#5-elegir-módulo-cliente)
-* [6. Iniciar, re-iniciar y parar los servicios con `docker-compose`](#6-iniciar-re-iniciar-y-parar-los-servicios-con-docker-compose)
-* [7. Familiarizarte con admisitración de contenedores](#7-familiarizarte-con-admisitración-de-contenedores)
-* [8. Opcionalmente, instalar interfaz gráfica para admisitrar data](#8-opcionalmente-instalar-interfaz-gráfica-para-admisitrar-data)
-* [9. Definir esquemas](#9-definir-esquemas)
-* [10. Definir estrategia de pruebas unitarias](#10-definir-estrategia-de-pruebas-unitarias)
-* [11. Familiarizarte con las pruebas de integración (e2e)](#11-familiarizarte-con-las-pruebas-de-integración-e2e)
+* [1. Escolher um Banco de Dados](#1-elegir-base-de-datos)
+* [2. Instalar `docker` e `docker-compose`](#2-instalar-docker-y-docker-compose)
+* [3. Configurar o "serviço" de banco de dados](#3-configurar-servicio-de-base-de-datos)
+* [4. Configurar Conexão com o Banco de Dados no "serviço" Node](#4-configurar-conexão-a-bbdd-en-servicio-node)
+* [5. Escolher um Módulo (Cliente)](#5-elegir-módulo-cliente)
+* [6. Iniciar, Reiniciar e Parar os Serviços com `docker-compose`](#6-iniciar-re-iniciar-y-parar-los-servicios-con-docker-compose)
+* [7. Familiarizar-se com a Administração de Contêineres](#7-familiarizarte-con-admisitración-de-contenedores)
+* [8. Opcionalmente, Instalar uma Interface Gráfica para Administrar Dados](#8-opcionalmente-instalar-interfaz-gráfica-para-admisitrar-data)
+* [9. Definir Esquemas](#9-definir-esquemas)
+* [10. Definir Estratégia de Testes Unitários](#10-definir-estrategia-de-pruebas-unitarias)
+* [11. Familiarizar-se com os Testes de Integração (e2e)](#11-familiarizarte-con-las-pruebas-de-integración-e2e)
 
 ***
 
-## 1. Elegir base de datos
+## 1. Escolher um Banco de Dados
 
-La primera decisión que tenemos que tomar, antes de comenzar a programar, es
-elegir una base de datos. En este proyecto se sugieren 3 opciones: dos de ellas
-_relacionales_ y basadas en SQL, (PostgreSQL y MySQL), y otra _no relacional_
-(MongoDB). Las 3 son excelentes opciones.
+A primeira decisão que precisamos tomar, antes de começar a programar, é escolher
+um banco de dados. Neste projeto, sugerimos 3 opções: duas delas _relacionais_ e
+baseadas em SQL (PostgreSQL e MySQL), e outra _não relacional_ (MongoDB). As três
+são excelentes opções.
 
-Algunos puntos a tener en cuenta:
+Aqui estão alguns pontos a serem considerados:
 
-* MongoDB es la más _común_ (popular) a día de hoy en el ecosistema de
-  Node.js.
-* Las bases de datos _relacionales_ normalmente requieren más diseño
-  _a priori_ (definir tablas, columnas, relaciones, ...) mientras que las
-  _no relacionales_ nos permiten ser más _flexibles_.
-* Las bases de datos _relacionales_ nos permiten relacionar datos de forma
-  más natural y garantizar la consistencia de la data. Nos dan una rigidez
-  que quita _flexibilidad_ pero agrega otro tipo de garantías, además de
-  permitirnos pensar en tablas y columnas, que es una idea con la que muchas
-  ya están familiarizadas.
-* MySQL, PostgreSQL y MongoDB (en ese orden) son las [bases de datos de
-  código abierto (Open Source) más populares a diciembre de 2020](https://www.statista.com/statistics/809750/worldwide-popularity-ranking-database-management-systems/).
-  Esto en el panorama general de las bases de datos, no solo el ecosistema de
-  Node.js.
-* PostgreSQL es una base datos _objeto-relacional_ (ORDBMS), mientras que
-  MySQL es puramente relacional. PostgreSQL tiene soporte nativo para objetos
-  JSON y otras características como indización de JSON.
+* MongoDB é o mais _comum_ (popular) atualmente no ecossistema de Node.js.
+* Bancos de dados _relacionais_ normalmente exigem mais design _a priori_
+  (definir tabelas, colunas, relações, ...) enquanto os _não relacionais_ nos
+  permitem ser mais _flexíveis_.
+* Bancos de dados _relacionais_ nos permitem relacionar dados de forma mais
+  natural e garantir a consistência dos dados. Eles nos fornecem uma rigidez que
+  remove _flexibilidade_, mas adiciona outros tipos de garantias, além de nos
+  permitir pensar em tabelas e colunas, um conceito com o qual muitos já estão
+  familiarizados.
+* MySQL, PostgreSQL e MongoDB (nesta ordem) são os [bancos de dados de
+  código aberto mais populares em dezembro de 2020](https://www.statista.com/statistics/809750/worldwide-popularity-ranking-database-management-systems/).
+  Isso é válido para o cenário geral de bancos de dados, não apenas no ecossistema
+  de Node.js.
+* PostgreSQL é um banco de dados _objeto-relacional_ (ORDBMS), enquanto MySQL é
+  puramente relacional. PostgreSQL tem suporte nativo para objetos JSON e outras
+  características como indexação de JSON.
 
-## 2. Instalar `docker` y `docker-compose`
+## 2. Instalar `docker` e `docker-compose`
 
-Independientemente de qué base datos elijas, en este proyecto vamos a ejecutar
-localmente (en nuestra computadora) el servidor de bases de datos usando
-_contenedores_ de Docker en vez de instalar el programa directamente en nuestra
-computadora. Además vamos a usar también la herramienta `docker-compose` para
-_orquestar_ nuestros contenedores: bases de datos y servidor web (node).
+Independentemente do banco de dados que você escolher, neste projeto, vamos
+executar localmente (em nosso computador) o servidor de banco de dados usando
+_contêineres_ do Docker, em vez de instalar o programa diretamente em nosso
+computador. Além disso, também vamos usar a ferramenta `docker-compose` para
+_orquestrar_ nossos contêineres: bancos de dados e servidor web (node).
 
-En los siguientes links puedes ver cómo instalar `docker` y `docker-compose` en
-tu sistema opetativo.
+Nos links a seguir, você pode aprender como instalar `docker` e `docker-compose`
+em seu sistema operacional.
 
-* [Get Docker](https://docs.docker.com/get-docker/)
-* [Install Docker Compose](https://docs.docker.com/compose/install/)
+* [Obter Docker](https://docs.docker.com/get-docker/)
+* [Instalar Docker Compose](https://docs.docker.com/compose/install/)
 
-## 3. Configurar "servicio" de base de datos
+## 3. Configurar o "serviço" de Banco de Dados
 
-El boilerplate de este proyecto incluye un archivo
-[`docker-compose.yml`](./docker-compose.yml) que ya contiene parte de la
-configuración de `docker-compose`. En este archivo veremos que hay listados 2
-servicios: `db` y `node`. Nuestra aplicación va a consistir de dos servidores:
-un servidor de bases de datos (el servicio `db`) y un servidor web implementado
-en Node.js (el servicio `node`).
+O _boilerplate_ deste projeto inclui um arquivo
+[`docker-compose.yml`](./docker-compose.yml) que já contém parte da
+configuração do `docker-compose`. Neste arquivo, você verá que há dois
+serviços listados: `db` e `node`. Nossa aplicação consistirá em dois servidores:
+um servidor de banco de dados (o serviço `db`) e um servidor web implementado
+em Node.js (o serviço `node`).
 
-En la sección correspondiente al servicio `db` hay 3 cosas importantes que
-tendremos que completar:
+Na seção correspondente ao serviço `db`, existem três coisas importantes que
+precisaremos completar:
 
-* Qué _imagen_ (`image`) queremos usar. Imágenes recomendadas:
+* Qual _imagem_ (`image`) queremos usar. Imagens recomendadas:
   [mongo](https://hub.docker.com/_/mongo),
-  [postgres](https://hub.docker.com/_/postgres) y
+  [postgres](https://hub.docker.com/_/postgres) e
   [mysql](https://hub.docker.com/_/mysql).
-* Qué volúmenes (`volumes`), archivos o carpetas, queremos mapear al
-  contenedor, como por ejemplo el directorio de datos (la carpeta donde la
-  base de datos guardará sus archivos).
-* Las variables de entorno (`environment`) necesarias para configurar nuestra
-  base de datos y usuarios. Estos datos nos van a servir después para
-  configurar la conexión desde Node.js.
+* Quais volumes (`volumes`), arquivos ou pastas, queremos mapear para o
+  contêiner, como por exemplo o diretório de dados (a pasta onde o banco de
+  dados salvará seus arquivos).
+* As variáveis de ambiente (`environment`) necessárias para configurar nosso
+  banco de dados e usuários. Esses dados serão úteis mais tarde para
+  configurar a conexão a partir do Node.js.
 
-Ejemplo de servicio `db` usando [MongoDB](https://hub.docker.com/_/mongo):
+Exemplo de serviço `db` usando [MongoDB](https://hub.docker.com/_/mongo):
 
 ```yml
 db:
@@ -97,7 +94,7 @@ db:
     - private
 ```
 
-Ejemplo de servicio `db` usando [PostgreSQL](https://hub.docker.com/_/postgres):
+Exemplo de serviço `db` usando [PostgreSQL](https://hub.docker.com/_/postgres):
 
 ```yml
 db:
@@ -111,7 +108,7 @@ db:
     - private
 ```
 
-Ejemplo de servicio `db` usando [MySQL](https://hub.docker.com/_/mysql):
+Exemplo de serviço `db` usando [MySQL](https://hub.docker.com/_/mysql):
 
 ```yml
 db:
@@ -128,26 +125,25 @@ db:
     - private
 ```
 
-## 4. Configurar conexión a BBDD en "servicio" node
+## 4. Configurar Conexão ao Banco de Dados no "Serviço" Node
 
-Ahora que ya tenemos la configuración del _servicio_ `db`, tenemos que
-completar la configuración del _servicio_ de Node.js. En particular nos
-interesa establecer el valor de la variable de entorno `DB_URL`, donde
-tendremos que poner el _connection string_ correspondiente a nuestra base de
-datos. Este _string_ de conexión sigue el formato de URL y se ve así:
+Agora que já temos a configuração do _serviço_ `db`, precisamos completar a
+configuração do _serviço_ Node.js. Em particular, é importante definir o valor
+da variável de ambiente `DB_URL`, onde devemos colocar a _connection string_
+correspondente ao nosso banco de dados. Esta _string_ de conexão segue o formato
+de URL e se parece com isso:
 
 ```text
 protocol://username:password@host:port/dbname?opt1=val1&...
 ```
 
-Acá sustituiremos `protocol` con el nombre del protocolo de la base de datos
-elegida (`mongodb`, `postgresql` o `mysql`) y `username`, `password` y
-`dbname` con los valores usados en la configuración del servicio `db` en el
-punto anterior. En este caso el valor de `host` será `db`, que es el nombre
-del servicio de base de datos en la configuración de `docker-compose.yml` y
-podemos referirnos a él por su nombre en la red interna entre los
-contenedores. Siguiendo con los ejemplos del punto anterior, la variable
-`DB_URL` en `docker-compose.yml` se vería así:
+Aqui, substituiremos `protocol` pelo nome do protocolo do banco de dados
+escolhido (`mongodb`, `postgresql` ou `mysql`) e `username`, `password` e
+`dbname` pelos valores usados na configuração do serviço `db` no ponto
+anterior. Neste caso, o valor de `host` será `db`, que é o nome do serviço de
+banco de dados na configuração do `docker-compose.yml` e podemos nos referir a
+ele pelo nome na rede interna entre os contêineres. Seguindo com os exemplos do
+ponto anterior, a variável `DB_URL` no `docker-compose.yml` ficaria assim:
 
 * MongoDB:
 
@@ -167,30 +163,30 @@ contenedores. Siguiendo con los ejemplos del punto anterior, la variable
   DB_URL: mysql://bq:secret@db:3306/bq
   ```
 
-## 5. Elegir módulo (cliente)
+## 5. Escolher um Módulo (Cliente)
 
-Ahora que ya tenemos un servidor de bases de datos vamos a necesitar elegir un
-módulo o librería diseñado para interactuar con nuestra base de datos desde
-Node.js. Existen un montón de opciones, pero para este proyecto te recomendamos
-elegir una de estas (que son las más populares para cada una de las bases de
-datos): [Mongoose](https://mongoosejs.com/) (MongoDB),
-[pg](https://www.npmjs.com/package/pg) (PostgreSQL) o
+Agora que já temos um servidor de banco de dados, precisamos escolher um módulo
+ou biblioteca projetada para interagir com nosso banco de dados a partir do
+Node.js. Existem muitas opções, mas para este projeto, recomendamos que você
+escolha uma destas (que são as mais populares para cada um dos bancos de dados):
+[Mongoose](https://mongoosejs.com/) (MongoDB),
+[pg](https://www.npmjs.com/package/pg) (PostgreSQL) ou
 [mysql](https://www.npmjs.com/package/mysql) (MySQL).
 
-El _boilerplate_ ya incluye un archivo `config.js` donde se leen las
-variables de entorno, y entre ellas está `DB_URL`. Como vemos ese valor lo
-estamos asignando en la propiedad `dbUrl` del módulo `config`.
+O _boilerplate_ já inclui um arquivo `config.js` onde as variáveis de ambiente
+são lidas e, entre elas, está `DB_URL`. Como podemos ver, esse valor está sendo
+atribuído à propriedade `dbUrl` do módulo `config`.
 
 ```js
 // `config.js`
 exports.dbUrl = process.env.DB_URL || "mongodb://localhost:27017/test";
 ```
 
-Ahora que ya sabemos dónde encontrar el _connection string_ (en el módulo
-config), podemos proceder a establecer una conexión con la base de datos
-usando el cliente elegido.
+Ahora que já sabemos onde encontrar a _connection string_ (no módulo
+config), podemos prosseguir e estabelecer uma conexão com o banco de dados
+usando o cliente escolhido.
 
-Ejemplo de conexión usando [Mongoose](https://mongoosejs.com/) (MongoDB):
+Exemplo de conexão usando [Mongoose](https://mongoosejs.com/) (MongoDB):
 
 ```js
 const mongoose = require("mongoose");
@@ -205,7 +201,7 @@ mongoose
   .catch(console.error);
 ```
 
-Ejemplo de conexión usando [pg](https://www.npmjs.com/package/pg)
+Exemplo de conexão usando [pg](https://www.npmjs.com/package/pg)
 (PostgreSQL):
 
 ```js
@@ -221,7 +217,7 @@ pgClient.query("SELECT NOW()", (err, res) => {
 });
 ```
 
-Ejemplo de conexión usando [mysql](https://www.npmjs.com/package/mysql)
+Exemplo de conexão usando [mysql](https://www.npmjs.com/package/mysql)
 (MySQL):
 
 ```js
@@ -240,41 +236,40 @@ connection.query("SELECT 1 + 1 AS solution", (error, results) => {
 connection.end();
 ```
 
-## 6. Iniciar, re-iniciar y parar los servicios con `docker-compose`
+## 6. Iniciar, reiniciar e parar os serviços com `docker-compose`
 
-Ahora que ya tenemos nuestra configuración de `docker-compose` lista, veamos
-cómo podemos _levantar_ la aplicación. Para eso usamos el comando
-`docker-compose up` dentro de la carpeta de nuestro proyecto (donde está el
-archivo `docker-compose.yml`).
+Agora que já temos nossa configuração `docker-compose` pronta, vejamos como
+podemos _iniciar_ a aplicação. Para isso, utilizamos o comando
+`docker-compose up` dentro da pasta do nosso projeto (onde está o arquivo
+`docker-compose.yml`).
 
 ```sh
 docker-compose up
 ```
 
-Para interrumpir el comando y que el terminal nos devuelva el _prompt_, usa
-`Ctrl + C`.
+Para interromper o comando e retornar ao _prompt_ do terminal, use `Ctrl + C`.
 
-Si usamos el comando así, sin opciones, esto levantará todos los servicios
-descritos en el `docker-compose.yml`. Alternativamente podemos arrancar un
-servicio en particular agregando el nombre del servicio en el comando. Por
-ejemplo, si queremos levantar sólo la base de datos:
+Se usarmos o comando dessa forma, sem opções, ele iniciará todos os serviços
+descritos no `docker-compose.yml`. Alternativamente, podemos iniciar um serviço
+específico adicionando o nome do serviço ao comando. Por exemplo, se quisermos
+iniciar apenas o banco de dados:
 
 ```sh
 docker-compose up db
 ```
 
-También tenemos la opción de arrancar los servicios y que corran en el _fondo_,
-como _daemons_, con la opción `-d`, de forma que inmediatamente se nos devuelve
-el _prompt_ y los servicios quedan corriendo.
+Também temos a opção de iniciar os serviços e fazê-los rodar em segundo plano,
+como _daemons_, usando a opção `-d`. Dessa forma, imediatamente o _prompt_ é
+retornado e os serviços continuam em execução.
 
 ```sh
 docker-compose up -d
 ```
 
-Además del comando `docker-compose up`, que construye, (re)crea, arranca, y
-se conecta a los contenedores de unos servicios, también tenemos disponibles
-comandos para iniciar (`start`), reiniciar (`restart`) y parar (`stop`)
-servicios con contenedores ya existentes.
+Além do comando `docker-compose up`, que constrói, (re)cria, inicia e se
+conecta aos contêineres de serviços, também temos comandos disponíveis para
+iniciar (`start`), reiniciar (`restart`) e parar (`stop`) serviços com
+contêineres já existentes.
 
 ```sh
 docker-compose start
@@ -282,10 +277,11 @@ docker-compose stop
 docker-compose restart
 ```
 
-Al igual que con `docker-compose up`, con estos otros comandos también podemos
-especificar con qué _servicio_ queremos interactuar (o con todos en caso de no
-especificarlo). Por ejemplo, para inicar, reiniciar y después parar el servidor
-de bases de datos:
+Assim como com `docker-compose up`, esses outros comandos também podem ser
+usados para especificar com qual _serviço_ queremos interagir (ou todos, se não
+especificado). Por exemplo, para iniciar, reiniciar e em seguida parar o
+servidor de banco de dados:
+
 
 ```sh
 docker-compose start db
@@ -293,98 +289,95 @@ docker-compose stop db
 docker-compose restart db
 ```
 
-## 7. Familiarizarte con admisitración de contenedores
+## 7. Familiarize-se com a Administração de Contêineres
 
-Además de los comandos que ya hemos visto de `docker-compose`, te recomendamos
-familiarizarte con estos otros comandos (entre otros) para poder _administrar_
-tus contenedores.
+Além dos comandos que já vimos no `docker-compose`, é recomendável que você se
+familiarize com outros comandos (entre outros) para poder _administrar_ seus
+contêineres.
 
-El comando `docker-compose ps` nos muestra un listado con los contenedores
-_activos_:
+O comando `docker-compose ps` exibe uma lista dos contêineres _ativos_:
 
 ```sh
 docker-compose ps
 ```
 
-También podemos listar _todos_ los contenedores, incluyendo los que están
-detenidos usando la opción `-a`:
+Também é possível listar _todos_ os contêineres, incluindo os que estão
+parados, usando a opção `-a`:
 
 ```sh
 docker-compose ps -a
 ```
 
-Para borrar los contenedores de los servicios:
+Para excluir os contêineres dos serviços:
 
 ```sh
 docker-compose rm
 ```
 
-Al igual que con los comandos anteriores, también podemos borrar los
-contenedores de un servicio en particular indicando su nombre:
+Da mesma forma que nos comandos anteriores, também podemos excluir os
+contêineres de um serviço específico indicando seu nome:
 
 ```sh
 docker-compose rm db
 ```
 
-Finalmente, cuando corremos nuestros servicios en el fondo, como _daemons_, para
-conectarnos a los contenedores y ver los _logs_ podemos usar:
+Finalmente, quando executamos nossos serviços em segundo plano, como _daemons_, para
+nos conectarmos aos contêineres e visualizar os _logs_, podemos usar:
 
 ```sh
 docker-compose logs
 ```
 
-Podemos agregar también la opción `-f` para hacer _streaming_ de los logs y
-quedarnos _escuchando_, así como especificar un servicio en particular. Por
-ejemplo:
+Podemos adicionar também a opção `-f` para fazer _streaming_ dos logs e ficar
+"ouvindo", assim como especificar um serviço em particular. Por exemplo:
 
 ```sh
 docker-compose logs -f db
 ```
 
-Recuerda que siempre puedes consultar la _ayuda_ de `docker-compose` con el
-sucomando `help`. Por ejemplo, si queremos ver la ayuda del subcomando `up`,
-podríamos hacer esto:
+Lembre-se de que você sempre pode consultar a _ajuda_ do `docker-compose` com o
+subcomando `help`. Por exemplo, se quisermos ver a ajuda do subcomando `up`,
+poderíamos fazer isso:
 
 ```sh
 docker-compose help up
 ```
 
-## 8. Opcionalmente, instalar interfaz gráfica para administrar data
+## 8. Opcionalmente, instale uma interface gráfica para administrar dados
 
-A la hora de trabajar con bases de datos es muy común usar algún tipo de
-interfaz gráfica que nos permita ver y manipular visualmente nuestra data.
-Hay opciones para cada base de datos. Recomendamos las siguientes:
+Ao trabalhar com bancos de dados, é comum usar alguma forma de interface gráfica
+que nos permita visualizar e manipular nossos dados de forma visual. Existem
+opções para cada tipo de banco de dados. Recomendamos as seguintes:
 [Compass](https://www.mongodb.com/products/compass) (MongoDB),
 [Workbench](https://www.mysql.com/products/workbench/) (MySQL),
 [pgAdmin](https://www.pgadmin.org/) (PostgreSQL).
 
-Si quieres usar este tipo de herramientas (como `Compass` o `WorkBench`), es
-probable que tengas que hacer que tu base de datos sea visible fuera de
-docker. Para ello puedes mapear el puerto de la base datos en el contenedor a
-algún puerto que esté libre en el host de docker (normalmente tu
-computadora). Normalmente vamos a mapear estos puertos estándar (por ejemplo
-`27017` para MongoDB) a otros números de puerto distintos ya que estos
-programas y/o sus puertos ya podrían estar en uso. Por ejemplo, si usamos
-MongoDB, podríamos agregar el siguiente mapeo de puertos al servico `db` en
-nuestro `docker-compose.yml`:
+Se você deseja utilizar esse tipo de ferramenta (como `Compass` ou `WorkBench`),
+é provável que você precise tornar seu banco de dados visível fora do
+Docker. Para fazer isso, você pode mapear a porta do banco de dados no contêiner
+para uma porta livre no host do Docker (normalmente, seu computador). Geralmente,
+mapeamos essas portas padrão (por exemplo, `27017` para MongoDB) para números de
+porta diferentes, já que esses programas e/ou suas portas podem já estar em uso.
+Por exemplo, se estamos usando MongoDB, poderíamos adicionar o seguinte mapeamento
+de portas ao serviço `db` em nosso `docker-compose.yml`:
 
 ```yaml
 ports:
   - 28017:27017
 ```
 
-Al listar los puertos de un contenedor o servicio en `docker-compose.yml` ten
-en cuenta que el número de la derecha es el puerto en el contenedor (red
-privada de docker), mientras que el número de la izquierda es el puerto en
-host de docker (normalmente nuestra computadora - `127.0.0.1` o `localhost`).
-En el ejemplo de arriba estamos _mapeando_ el puerto `27017` del contenedor
-al puerto `28017` del host de docker.
+Ao listar as portas de um contêiner ou serviço no `docker-compose.yml`, lembre-se
+de que o número à direita representa a porta no contêiner (rede privada do
+Docker), enquanto o número à esquerda representa a porta no host do Docker
+(normalmente, seu computador - `127.0.0.1` ou `localhost`). No exemplo acima,
+estamos _mapeando_ a porta `27017` do contêiner para a porta `28017` do host do
+Docker.
 
-Si estás usando PostgreSQL o MySQL, los puertos que nos interesaría mapear
-serían el `5432` y `3306` respectivamente.
+Se você estiver usando PostgreSQL ou MySQL, as portas que você gostaria de
+mapear seriam `5432` e `3306`, respectivamente.
 
-Si estamos _exponiendo_ el puerto en nuestra computadora (el _host_), además
-tendrás también que conectar el contenedor `db` a la red _pública_:
+Se estivermos _expondo_ a porta em nosso computador (o _host_), você também
+precisará conectar o contêiner `db` à rede _pública_:
 
 ```yaml
 networks:
@@ -392,12 +385,12 @@ networks:
   - private
 ```
 
-Después de este cambio podrás acceder usando `127.0.0.1` o `localhost` y el
-puerto al que hemos mapeado, `28017` en este ejemplo.
+Após essa alteração, você poderá acessar usando `127.0.0.1` ou `localhost` e a
+porta à qual mapeamos, `28017` neste exemplo.
 
-Si eliges [pgAdmin](https://www.pgadmin.org/) (PostgreSQL), la opción más
-fácil es usar pgAdmin como contenedor y agregarlo como un nuevo servicio a
-nuestro `docker-compose.yml`. Por ejemplo:
+Se você escolher o [pgAdmin](https://www.pgadmin.org/) (PostgreSQL), a opção mais
+fácil é usar o pgAdmin como um contêiner e adicioná-lo como um novo serviço ao
+nosso `docker-compose.yml`. Por exemplo:
 
 ```yml
 pgadmin:
@@ -413,82 +406,80 @@ pgadmin:
     - private
 ```
 
-NOTA: Para conectar desde pgAdmin usando un contenedor, usa el _nombre_ del
-contenedor de la base datos (ie: `XXX-001-burger-queen-api_db_1`) como nombre
-de host para que pgAdmin se pueda conectar a través de la red _privada_.
+NOTA: Para se conectar ao pgAdmin usando um contêiner, utilize o _nome_ do
+contêiner do banco de dados (por exemplo: `XXX-001-burger-queen-api_db_1`) como
+nome do host para que o pgAdmin possa se conectar através da rede _privada_.
 
-## 9. Definir esquemas
+## 9. Definir Esquemas
 
-Llegado a este punto ya deberíamos tener una configuración de `docker-compose`
-capaz de _levantar_ la base datos y servidor de Node.js.
+Neste ponto, você deve ter uma configuração de `docker-compose` pronta para
+_levantar_ o banco de dados e o servidor Node.js.
 
-Como parte del proceso de diseño de nuestra base de datos vamos a tener que
-especificar los _esquemas_ de nuestros _modelos_ de datos. Con esto nos
-referimos a que tenemos que _describir_ de alguna forma las colecciones o
-tablas que vamos a usar y la _forma_ de los objetos o filas que vayamos a
-guardar en esas colecciones.
+Como parte do processo de design do nosso banco de dados, teremos que
+especificar os _esquemas_ dos nossos _modelos_ de dados. Com isso, queremos
+dizer que precisamos _descrever_ de alguma forma as coleções ou tabelas que
+vamos usar e a _estrutura_ dos objetos ou linhas que vamos armazenar nessas
+coleções.
 
-Si has elegido MongoDB y Mongoose, este último nos ofrece un mecanismo para
-describir esos [_modelos_](https://mongoosejs.com/docs/models.html) y
-[_esquemas_](https://mongoosejs.com/docs/guide.html) de datos en JavaScript.
+Se você escolheu MongoDB e Mongoose, este último nos oferece um mecanismo para
+descrever esses [_modelos_](https://mongoosejs.com/docs/models.html) e
+[_esquemas_](https://mongoosejs.com/docs/guide.html) de dados em JavaScript.
 
-Si has elegido usar una base de datos SQL, es común incluir algunos scripts
-`.sql` con el código SQL que nos permita _crear_ (o alterar) las tablas
-necesarias. Alternativamente, podrías también explorar abstracciones más
-modernas como [Prisma](https://www.prisma.io/).
+Se você escolheu usar um banco de dados SQL, é comum incluir alguns scripts
+`.sql` com o código SQL que nos permite _criar_ (ou alterar) as tabelas
+necessárias. Alternativamente, você também pode explorar abstrações mais
+modernas como o [Prisma](https://www.prisma.io/).
 
-## 10. Definir estrategia de pruebas unitarias
+## 10. Definir Estratégia de Testes Unitários
 
-Además de las pruebas `e2e` que ya incluye el _boilerplate_ del proyecto, se
-espera que puedas también usar pruebas _unitarias_ para el desarrollo de los
-diferentes _endpoints_ o _rutas_ así como otros módulos internos que decidas
-desarrollar.
+Além dos testes `e2e` já incluídos no _boilerplate_ do projeto, espera-se que
+você também utilize testes _unitários_ para desenvolver os diferentes _endpoints_
+ou _rotas_, bem como outros módulos internos que você decidir desenvolver.
 
-Para hacer pruebas unitarias de _rutas_ de Express, te recomendamos explorar la
-librería [`supertest`](https://www.npmjs.com/package/supertest), que puedes usar
-en combinación con `jest`.
+Para realizar testes unitários em _rotas_ do Express, recomendamos explorar a
+biblioteca [`supertest`](https://www.npmjs.com/package/supertest), que pode ser
+usada em conjunto com o `jest`.
 
-Otro punto a tener en cuenta en las pruebas unitarias, es cómo _mockear_ la base
-de datos. Algunas bases de datos ofrecen herramientas (como
+Outro ponto a ser considerado nos testes unitários é como _mockear_ o banco de
+dados. Alguns bancos de dados oferecem ferramentas (como o
 [`mongodb-memory-server`](https://github.com/nodkz/mongodb-memory-server)) que
-nos permiten usar una base de datos en memoria y así evitar hacer _mocks_ per
-se, pero por lo general querremos considerar cómo abstraer la interacción
-con la base de datos para facilitar _mocks_ que nos permitan concentrarnos en
-la lógica de las rutas.
+permitem usar um banco de dados em memória e assim evitar a necessidade de fazer
+_mocks_ propriamente ditos. No entanto, geralmente queremos considerar como
+abstrair a interação com o banco de dados para facilitar _mocks_ que nos
+permitam concentrar na lógica das rotas.
 
-## 11. Familiarizarte con las pruebas de integración (e2e)
+## 11. Familiarize-se com Testes de Integração (e2e)
 
-El _boilerplate_ de este proyecto ya incluye pruebas `e2e` (end-to-end) o de
-_integración_, que se encargan de probar nuestra aplicación en conjunto,
-através de la interfaz HTTP. A diferencia de las pruebas unitarias, en vez
-de importar o requerir un módulo y probar una función de forma aislada, lo que
-vamos a hacer es arrancar toda la aplicación, y probarla tal como se usaría en
-el mundo real, para ello la aplicación de prueba necesitará una base de datos y
-escuchar en un puerto de red.
+O _boilerplate_ deste projeto já inclui testes `e2e` (end-to-end) ou de
+_integração_, que são responsáveis por testar nossa aplicação em conjunto,
+através da interface HTTP. Ao contrário dos testes unitários, onde importamos ou
+requeremos um módulo e testamos uma função de forma isolada, o que faremos aqui
+é iniciar toda a aplicação e testá-la como seria usado no mundo real. Para isso,
+a aplicação de teste precisará de um banco de dados e estar ouvindo em uma porta
+de rede.
 
-Para correr pruebas e2e sobre instancia local podemos usar:
+Para executar testes e2e em uma instância local, podemos usar:
 
 ```sh
 npm run test:e2e
 ```
 
-Esto levanta la aplicación con `npm start` y corre los tests contra la URL de
-esta instancia (por defecto `http://127.0.0.1:8080`). Esto asume que la base de
-datos está disponible.
+Isso inicia a aplicação com `npm start` e executa os testes contra a URL dessa
+instância (por padrão `http://127.0.0.1:8080`). Isso assume que o banco de dados
+está disponível.
 
-Alternativamente, y quizás más fácil de usar, podemos también levantar nuestra
-aplicación usando `docker-compose`, o incluso en producción, y después correr
-las pruebas `e2e` pasando la URL de la aplicación en la variable de entorno
-`REMOTE_URL`. Por ejemplo:
+Alternativamente, e talvez seja mais fácil de usar, podemos também iniciar nossa
+aplicação usando `docker-compose`, ou até mesmo em produção, e então executar os
+testes `e2e` passando a URL da aplicação na variável de ambiente `REMOTE_URL`.
+Por exemplo:
 
 ```sh
 REMOTE_URL=http://127.0.0.1:8080 npm run test:e2e
 ```
 
-Al especificar `REMOTE_URL`, los tests no tratarán de _levantar_ un servidor
-local sino que usarán directamente la URL provista asumiendo que la aplicación
-está disponible en dicha URL. Esto nos permite probar también contra URLs
-remotas. Por ejemplo:
+Ao especificar `REMOTE_URL`, os testes não tentarão _iniciar_ um servidor local,
+mas usarão diretamente a URL fornecida, assumindo que a aplicação está disponível
+naquela URL. Isso nos permite testar também contra URLs remotas. Por exemplo:
 
 ```sh
 REMOTE_URL=https://api.my-super-app.com npm run test:e2e
