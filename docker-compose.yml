@@ -1,20 +1,13 @@
 version: "3"
 services:
-  db:
-    # TODO: configura tu imagen de base de datos, te recomendamos una de estas:
-    # https://hub.docker.com/_/mongo
-    # https://hub.docker.com/_/postgres
-    # https://hub.docker.com/_/mysql
-    networks:
-      - private
   node:
-    image: node:12 # https://hub.docker.com/_/node/
+    image: node:18 # https://hub.docker.com/_/node/
     user: node
     working_dir: /home/node/app
     environment:
       NODE_ENV: production
       PORT: 8080
-      DB_URL: <CONNECTION STRING>
+      DB_URL: mongodb+srv://gabrielafaria806:TO9r1WGlRqAvtpP6@burguer-queen-api.uzcyqxa.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp
       JWT_SECRET: xxxxxxxx
       ADMIN_EMAIL: admin@localhost
       ADMIN_PASSWORD: changeme
@@ -28,8 +21,6 @@ services:
       - 80:8080
     # reinstalamos las dependencias y levantamos el servidor
     command: bash -c 'rm -rf node_modules && npm install && npm start'
-    depends_on:
-      - db
     networks:
       - public
       - private
