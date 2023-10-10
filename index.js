@@ -8,14 +8,17 @@ const pkg = require('./package.json');
 
 const { port, dbUrl, secret } = config;
 const app = express();
-
 mongoose
   .connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(console.log)
-  .catch(console.error);
+  .then(() => {
+    console.log('deu certo');
+  })
+  .catch((error) => {
+    console.log('deu errado',error)
+  });
 
 app.set('config', config);
 app.set('pkg', pkg);
