@@ -16,9 +16,6 @@ const productsSchema = new mongoose.Schema(
     type: {
       type: String,
     },
-    dataEntry: {
-      type: Date,
-    },
   },
   { timestamps: true },
 );
