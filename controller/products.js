@@ -1,6 +1,6 @@
 const Products = require('../models/Products');
 
-const createProduct = async (req, res) => {
+const createProduct = async (req, resp) => {
   try {
     const {
       name,
@@ -10,7 +10,7 @@ const createProduct = async (req, res) => {
     } = req.body;
 
     if (!name || !price || !type) {
-      return res.status(400).json({ error: 'Fields name, price and type are required' });
+      return resp.status(400).json({ error: 'Fields name, price and type are required' });
     }
 
     const product = new Products({
@@ -21,9 +21,19 @@ const createProduct = async (req, res) => {
     });
 
     const newProduct = await product.save();
-    res.status(201).json({ newProduct });
+    resp.status(201).json({ newProduct });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    resp.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getProductById = async (req, resp) => {
+  try {
+    const productId = req.params.id;
+    const product = await Products.findById(productId);
+    resp.json(product);
+  } catch (error) {
+    resp.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -36,7 +46,24 @@ const getProducts = async (req, resp) => {
   }
 };
 
+const deleteProduct = async (req, resp) => {
+  try {
+    const productId = req.params.id;
+    const deletedProduct = await Products.findByIdAndDelete(productId);
+
+    if (!deletedProduct) {
+      return resp.status(404).json({ error: 'Product not found' });
+    }
+
+    resp.status(200).json({ message: 'Successfully deleted' });
+  } catch (error) {
+    resp.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
-  getProducts,
   createProduct,
+  getProducts,
+  getProductById,
+  deleteProduct,
 };

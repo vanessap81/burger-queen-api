@@ -1,6 +1,6 @@
 const Orders = require('../models/Orders');
 
-const createOrder = async (req, res) => {
+const createOrder = async (req, resp) => {
   try {
     const {
       userId,
@@ -10,7 +10,7 @@ const createOrder = async (req, res) => {
     } = req.body;
 
     if (!userId || !products || !client) {
-      return res.status(400).json({ error: 'Fields userId and products are required' });
+      return resp.status(400).json({ error: 'Fields userId and products are required' });
     }
 
     const order = new Orders({
@@ -21,9 +21,19 @@ const createOrder = async (req, res) => {
     });
 
     const newOrder = await order.save();
-    res.status(201).json({ newOrder });
+    resp.status(201).json({ newOrder });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    resp.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getOrderById = async (req, resp) => {
+  try {
+    const orderId = req.params.id;
+    const order = await Orders.findById(orderId);
+    resp.json(order);
+  } catch (error) {
+    resp.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -36,7 +46,24 @@ const getOrders = async (req, resp) => {
   }
 };
 
+const deleteOrder = async (req, resp) => {
+  try {
+    const orderId = req.params.id;
+    const deletedOrder = await Orders.findByIdAndDelete(orderId);
+
+    if (!deletedOrder) {
+      return resp.status(404).json({ error: 'Order not found' });
+    }
+
+    resp.status(200).json({ message: 'Successfully deleted' });
+  } catch (error) {
+    resp.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
-  getOrders,
   createOrder,
+  getOrders,
+  getOrderById,
+  deleteOrder,
 };

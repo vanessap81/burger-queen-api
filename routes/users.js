@@ -6,8 +6,10 @@ const {
 } = require('../middleware/auth');
 
 const {
-  getUsers,
   createUser,
+  getUsers,
+  getUserById,
+  deleteUser,
 } = require('../controller/users');
 
 const initAdminUser = (app, next) => {
@@ -93,8 +95,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.get('/users/:uid', requireAuth, (req, resp) => {
-  });
+  app.get('/users/:id', getUserById);
 
   /**
    * @name POST /users
@@ -158,8 +159,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.delete('/users/:uid', requireAuth, (req, resp, next) => {
-  });
+  app.delete('/users/:id', deleteUser);
 
   initAdminUser(app, next);
 };

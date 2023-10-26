@@ -4,8 +4,10 @@ const {
 } = require('../middleware/auth');
 
 const {
-  getProducts,
   createProduct,
+  getProducts,
+  getProductById,
+  deleteProduct,
 } = require('../controller/products');
 
 /** @module products */
@@ -51,7 +53,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si el producto con `productId` indicado no existe
    */
-  app.get('/products/:productId', requireAuth);
+  app.get('/products/:id', getProductById);
 
   /**
    * @name POST /products
@@ -120,7 +122,7 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es ni admin
    * @code {404} si el producto con `productId` indicado no existe
    */
-  app.delete('/products/:productId', requireAdmin);
+  app.delete('/products/:id', deleteProduct);
 
   nextMain();
 };

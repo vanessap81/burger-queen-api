@@ -1,11 +1,19 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config');
 
-module.exports = (secret) => (req, resp, next) => {
+const { secret } = config;
+
+module.exports = () => (req, resp, next) => {
   const { authorization } = req.headers;
-
   if (!authorization) {
     return next();
   }
+
+  const {
+    email,
+    password,
+    role,
+  } = req.body;
 
   const [type, token] = authorization.split(' ');
 
@@ -16,6 +24,11 @@ module.exports = (secret) => (req, resp, next) => {
   jwt.verify(token, secret, (err, decodedToken) => {
     if (err) {
       return next(403);
+    }
+
+    if (decodedToken.user.email === email && decodedToken.user.password === password
+      && decodedToken.user.role === role) {
+      return next();
     }
 
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
