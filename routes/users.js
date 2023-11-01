@@ -1,32 +1,18 @@
-const bcrypt = require('bcrypt');
-
 const {
-  requireAuth,
-  requireAdmin,
+  requiredAuth,
+  isAdmin,
 } = require('../middleware/auth');
 
 const {
   createUser,
   getUsers,
   getUserById,
+  updateUser,
   deleteUser,
 } = require('../controller/users');
+const config = require('../config');
 
-const initAdminUser = (app, next) => {
-  const { adminEmail, adminPassword } = app.get('config');
-  if (!adminEmail || !adminPassword) {
-    return next();
-  }
-
-  const adminUser = {
-    email: adminEmail,
-    password: bcrypt.hashSync(adminPassword, 10),
-    roles: { admin: true },
-  };
-
-  // TODO: crear usuaria admin
-  next();
-};
+const { secret } = config;
 
 /*
  * Diagrama de flujo de una aplicación y petición en node - express :
@@ -55,7 +41,7 @@ const initAdminUser = (app, next) => {
  */
 
 /** @module users */
-module.exports = (app, next) => {
+module.exports = (app) => {
   /**
    * @name GET /users
    * @description Lista usuarias
@@ -77,7 +63,7 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es ni admin
    */
-  app.get('/users', getUsers);
+  app.get('/users', requiredAuth(secret), isAdmin, getUsers);
 
   /**
    * @name GET /users/:uid
@@ -95,7 +81,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.get('/users/:id', getUserById);
+  app.get('/users/:id', requiredAuth(secret), isAdmin, getUserById);
 
   /**
    * @name POST /users
@@ -116,7 +102,7 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si ya existe usuaria con ese `email`
    */
-  app.post('/users', createUser);
+  app.post('/users', requiredAuth(secret), isAdmin, createUser);
 
   /**
    * @name PUT /users
@@ -140,8 +126,7 @@ module.exports = (app, next) => {
    * @code {403} una usuaria no admin intenta de modificar sus `roles`
    * @code {404} si la usuaria solicitada no existe
    */
-  app.put('/users/:uid', requireAuth, (req, resp, next) => {
-  });
+  app.put('/users/:id', requiredAuth(secret), isAdmin, updateUser);
 
   /**
    * @name DELETE /users
@@ -159,7 +144,5 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.delete('/users/:id', deleteUser);
-
-  initAdminUser(app, next);
+  app.delete('/users/:id', requiredAuth(secret), isAdmin, deleteUser);
 };

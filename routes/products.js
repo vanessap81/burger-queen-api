@@ -1,6 +1,6 @@
 const {
-  requireAuth,
-  requireAdmin,
+  requiredAuth,
+  isAdmin,
 } = require('../middleware/auth');
 
 const {
@@ -102,7 +102,7 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es admin
    * @code {404} si el producto con `productId` indicado no existe
    */
-  app.put('/products/:productId', requireAdmin);
+  app.put('/products/:productId', isAdmin);
 
   /**
    * @name DELETE /products

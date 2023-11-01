@@ -46,6 +46,26 @@ const getOrders = async (req, resp) => {
   }
 };
 
+const updateOrder = async (req, resp) => {
+  try {
+    const orderId = req.params.id;
+    const { email, password, role } = req.body;
+    const updatedUser = await Orders.findByIdAndUpdate(
+      orderId,
+      { email, password, role },
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      return resp.status(404).json({ error: 'User not found' });
+    }
+
+    resp.json({ updatedUser });
+  } catch (error) {
+    resp.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 const deleteOrder = async (req, resp) => {
   try {
     const orderId = req.params.id;
@@ -65,5 +85,6 @@ module.exports = {
   createOrder,
   getOrders,
   getOrderById,
+  updateOrder,
   deleteOrder,
 };
