@@ -5,11 +5,12 @@ const createUser = async (req, resp) => {
   try {
     const {
       email,
+      name,
       password,
       role,
     } = req.body;
 
-    if (!email || !password || !role) {
+    if (!email || !password || !role || !name) {
       return resp.status(400).json({ error: 'All fields are required' });
     }
 
@@ -19,6 +20,7 @@ const createUser = async (req, resp) => {
       const passwordHash = await bcrypt.hash(password, 10);
       const newUser = new User({
         email,
+        name,
         password: passwordHash,
         role,
       });
@@ -30,7 +32,7 @@ const createUser = async (req, resp) => {
       return resp.status(403).json({ error: 'Email already registered' });
     }
   } catch (error) {
-    resp.status(500).json({ message: 'Internal Server Error', error });
+    resp.status(500).json({ error: 'Internal Server Error' });
   }
 };
 

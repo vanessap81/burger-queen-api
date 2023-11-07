@@ -46,6 +46,36 @@ const getProducts = async (req, resp) => {
   }
 };
 
+const updateProduct = async (req, resp) => {
+  try {
+    const productId = req.params.id;
+    const {
+      name,
+      price,
+      image,
+      type,
+    } = req.body;
+    const updatedProduct = await Products.findByIdAndUpdate(
+      productId,
+      {
+        name,
+        price,
+        image,
+        type,
+      },
+      { new: true },
+    );
+
+    if (!updatedProduct) {
+      return resp.status(404).json({ error: 'Product not found' });
+    }
+
+    resp.json({ updatedProduct });
+  } catch (error) {
+    resp.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 const deleteProduct = async (req, resp) => {
   try {
     const productId = req.params.id;
@@ -65,5 +95,6 @@ module.exports = {
   createProduct,
   getProducts,
   getProductById,
+  updateProduct,
   deleteProduct,
 };

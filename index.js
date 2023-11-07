@@ -22,7 +22,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 routes(app, (err) => {
-  console.log(err)
   if (err) {
     throw err;
   }

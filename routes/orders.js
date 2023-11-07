@@ -4,6 +4,7 @@ const {
   createOrder,
   getOrders,
   getOrderById,
+  updateOrder,
   deleteOrder,
 } = require('../controller/orders');
 const config = require('../config');
@@ -119,7 +120,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orderId con `orderId` indicado no existe
    */
-  app.put('/orders/:orderId', requiredAuth(secret));
+  app.put('/orders/:id', requiredAuth(secret), updateOrder);
 
   /**
    * @name DELETE /orders

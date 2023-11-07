@@ -41,7 +41,7 @@ const { secret } = config;
  */
 
 /** @module users */
-module.exports = (app) => {
+module.exports = (app, nextMain) => {
   /**
    * @name GET /users
    * @description Lista usuarias
@@ -145,4 +145,6 @@ module.exports = (app) => {
    * @code {404} si la usuaria solicitada no existe
    */
   app.delete('/users/:id', requiredAuth(secret), isAdmin, deleteUser);
+
+  nextMain();
 };

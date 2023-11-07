@@ -49,18 +49,28 @@ const getOrders = async (req, resp) => {
 const updateOrder = async (req, resp) => {
   try {
     const orderId = req.params.id;
-    const { email, password, role } = req.body;
-    const updatedUser = await Orders.findByIdAndUpdate(
+    const {
+      userId,
+      client,
+      products,
+      status,
+    } = req.body;
+    const updatedOrder = await Orders.findByIdAndUpdate(
       orderId,
-      { email, password, role },
+      {
+        userId,
+        client,
+        products,
+        status,
+      },
       { new: true },
     );
 
-    if (!updatedUser) {
-      return resp.status(404).json({ error: 'User not found' });
+    if (!updatedOrder) {
+      return resp.status(404).json({ error: 'Order not found' });
     }
 
-    resp.json({ updatedUser });
+    resp.json({ updatedOrder });
   } catch (error) {
     resp.status(500).json({ error: 'Internal Server Error' });
   }
