@@ -3,3 +3,4 @@ secrets.env
 docs
 package-lock.json
 .env
+coverage
