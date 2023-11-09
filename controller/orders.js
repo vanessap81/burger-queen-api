@@ -10,7 +10,7 @@ const createOrder = async (req, resp) => {
     } = req.body;
 
     if (!userId || !products || !client) {
-      return resp.status(400).json({ error: 'Fields userId and products are required' });
+      return resp.status(400).json({ error: 'Fields userId, products and client are required' });
     }
 
     const order = new Orders({
@@ -31,6 +31,9 @@ const getOrderById = async (req, resp) => {
   try {
     const orderId = req.params.id;
     const order = await Orders.findById(orderId);
+    if (!order) {
+      return resp.status(404).json({ error: 'Order not found' });
+    }
     resp.json(order);
   } catch (error) {
     resp.status(500).json({ error: 'Internal Server Error' });

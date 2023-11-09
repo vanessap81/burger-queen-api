@@ -22,20 +22,20 @@ describe('createOrder', () => {
   it('should success create a new order', async () => {
     const req = {
       body: {
-        client: 'nicole',
-        userName: 'floquinho',
+        client: 'bibi',
+        userId: 'outro',
         status: 'pending',
-        products: [{ name: 'Café americano', quantity: 1 }],
+        products: [{ name: 'coffe', quantity: 1 }],
       },
     };
     Orders.prototype.save = jest.fn().mockResolvedValue({});
     await createOrder(req, res);
     expect(res.status).toHaveBeenCalledWith(201);
     expect(Orders).toHaveBeenCalledWith({
-      client: 'nicole',
-      userName: 'floquinho',
+      client: 'bibi',
+      userId: 'outro',
       status: 'pending',
-      products: [{ name: 'Café americano', quantity: 1 }],
+      products: [{ name: 'coffe', quantity: 1 }],
     });
   });
 
@@ -48,14 +48,14 @@ describe('createOrder', () => {
 });
 
 describe('updateOrder', () => {
-  it('should update order data ', async () => {
+  it('should update order data', async () => {
     const req = {
       params: { id: '1' },
       body: {
-        client: 'nicole',
-        userName: 'floquinho',
+        client: 'bibi',
+        userId: 'outro',
         status: 'pending',
-        products: [{ name: 'Café americano', quantity: 1 }],
+        products: [{ name: 'coffe', quantity: 1 }],
       },
     };
     Orders.findByIdAndUpdate = jest.fn().mockResolvedValue(req.body);
@@ -71,10 +71,10 @@ describe('updateOrder', () => {
     const req = {
       params: { id: 'invalidId' },
       body: {
-        client: 'nicole',
-        userName: 'floquinho',
+        client: 'bibi',
+        userId: 'outro',
         status: 'pending',
-        products: [{ name: 'Café americano', quantity: 1 }],
+        products: [{ name: 'coffe', quantity: 1 }],
       },
     };
     Orders.findByIdAndUpdate = jest.fn().mockResolvedValue(null);
@@ -92,10 +92,10 @@ describe('updateOrder', () => {
     const req = {
       params: { id: '1' },
       body: {
-        client: 'nicole',
-        userName: 'floquinho',
+        client: 'bibi',
+        userId: 'outro',
         status: 'pending',
-        products: [{ name: 'Café americano', quantity: 1 }],
+        products: [{ name: 'coffe', quantity: 1 }],
       },
     };
     Orders.findByIdAndUpdate = jest.fn().mockRejectedValue(new Error('Update error'));
@@ -112,12 +112,12 @@ describe('updateOrder', () => {
 
 describe('getOrders', () => {
   it('should return all orders', async () => {
-    const orders = [{ client: 'nicole', status: 'pending' }, { client: 'hideki', status: 'completed' }];
+    const orders = [{ client: 'bibi', status: 'pending' }, { client: 'hideki', status: 'completed' }];
     const req = {};
     Orders.find = jest.fn().mockResolvedValue(orders);
     await getOrders(req, res);
     expect(Orders.find).toHaveBeenCalled();
-    expect(res.json).toHaveBeenCalledWith({ orders });
+    expect(res.json).toHaveBeenCalledWith(orders);
   });
 
   it('should handle error if cant get orders', async () => {
@@ -133,7 +133,7 @@ describe('getOrders', () => {
 describe('getOrdersById', () => {
   it('should return orders by id', async () => {
     const orderMock = {
-      client: 'nicole',
+      client: 'bibi',
       status: 'pending',
     };
     const req = {
@@ -142,7 +142,7 @@ describe('getOrdersById', () => {
     Orders.findById = jest.fn().mockResolvedValue(orderMock);
     await getOrderById(req, res);
     expect(Orders.findById).toHaveBeenCalledWith('1');
-    expect(res.json).toHaveBeenCalledWith({ order: orderMock });
+    expect(res.json).toHaveBeenCalledWith(orderMock);
   });
 
   it('should return error 404 if order is not found', async () => {
@@ -176,7 +176,7 @@ describe('deleteOrders', () => {
     Orders.findByIdAndDelete = jest.fn().mockResolvedValue(orderMock);
     await deleteOrder(req, res);
     expect(Orders.findByIdAndDelete).toHaveBeenCalledWith('1');
-    expect(res.json).toHaveBeenCalledWith({ msg: 'Success deleted order' });
+    expect(res.json).toHaveBeenCalledWith({ message: 'Successfully deleted' });
   });
 
   it('should return error 404 if order is not found', async () => {
