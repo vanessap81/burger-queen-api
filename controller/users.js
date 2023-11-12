@@ -55,10 +55,10 @@ const getUserById = async (req, resp) => {
 
     if (!user) {
       resp.status(404).json({ error: 'User not found' });
+    } else {
+      user.password = undefined;
+      resp.json(user);
     }
-
-    user.password = undefined;
-    resp.json(user);
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'User not found' });
@@ -91,11 +91,10 @@ const updateUser = async (req, resp) => {
 
     if (!updatedUser) {
       resp.status(404).json({ error: 'User not found' });
+    } else {
+      updatedUser.password = undefined;
+      resp.json({ updatedUser });
     }
-
-    updatedUser.password = undefined;
-
-    resp.json({ updatedUser });
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'User not found' });
@@ -112,9 +111,9 @@ const deleteUser = async (req, resp) => {
 
     if (!deletedUser) {
       resp.status(404).json({ error: 'User not found' });
+    } else {
+      resp.status(200).json({ message: 'Successfully deleted' });
     }
-
-    resp.status(200).json({ message: 'Successfully deleted' });
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'User not found' });

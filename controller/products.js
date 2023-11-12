@@ -34,9 +34,9 @@ const getProductById = async (req, resp) => {
 
     if (!product) {
       resp.status(404).json({ error: 'Product not found' });
+    } else {
+      resp.json(product);
     }
-
-    resp.json(product);
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'Product not found' });
@@ -76,9 +76,9 @@ const updateProduct = async (req, resp) => {
     );
     if (!updatedProduct) {
       resp.status(404).json({ error: 'Product not found' });
+    } else {
+      resp.json({ updatedProduct });
     }
-
-    resp.json({ updatedProduct });
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'Product not found' });
@@ -95,9 +95,9 @@ const deleteProduct = async (req, resp) => {
 
     if (!deletedProduct) {
       resp.status(404).json({ error: 'Product not found' });
+    } else {
+      resp.status(200).json({ message: 'Successfully deleted' });
     }
-
-    resp.status(200).json({ message: 'Successfully deleted' });
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'Product not found' });

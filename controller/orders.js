@@ -34,9 +34,9 @@ const getOrderById = async (req, resp) => {
 
     if (!order) {
       resp.status(404).json({ error: 'Order not found' });
+    } else {
+      resp.json(order);
     }
-
-    resp.json(order);
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'Order not found' });
@@ -76,10 +76,10 @@ const updateOrder = async (req, resp) => {
     );
 
     if (!updatedOrder) {
-      return resp.status(404).json({ error: 'Order not found' });
+      resp.status(404).json({ error: 'Order not found' });
+    } else {
+      resp.json({ updatedOrder });
     }
-
-    resp.json({ updatedOrder });
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'Order not found' });
@@ -96,9 +96,9 @@ const deleteOrder = async (req, resp) => {
 
     if (!deletedOrder) {
       resp.status(404).json({ error: 'Order not found' });
+    } else {
+      resp.status(200).json({ message: 'Successfully deleted' });
     }
-
-    resp.status(200).json({ message: 'Successfully deleted' });
   } catch (error) {
     if (error.reason) {
       resp.status(404).json({ error: 'Order not found' });
