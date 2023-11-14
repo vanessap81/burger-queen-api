@@ -4,6 +4,7 @@ const config = require('./config');
 const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
+const cors = require('cors');
 
 const { port, dbUrl } = config;
 const app = express();
@@ -17,6 +18,7 @@ app.set('config', config);
 app.set('pkg', pkg);
 
 // parse application/x-www-form-urlencoded
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
