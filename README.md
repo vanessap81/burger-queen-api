@@ -41,16 +41,16 @@ Here you can find the [API URL](http://burger-queen-api-dusky.vercel.app) that c
 
 `/`
 
-* `GET /`
+- `GET /`
 
 <img src='./assets/GET NAME VERSION.png'>
 
-
 `/login`
 
-* `POST /login`
+- `POST /login`
 
 The request for this route must send an object containing the fields:
+
 <img src='./assets/POST LOGIN REQ.png'>
 
 The response should be:
@@ -58,7 +58,7 @@ The response should be:
 
 `/users`
 
-* `GET /users`
+- `GET /users`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
@@ -67,8 +67,7 @@ If the token is not of an user with the role admin, a `403` code will be returne
 When the token is of an admin user, the response should be a array of objects, containing all users.
 <img src='./assets/GET USERS.png'>
 
-
-* `GET /users/:id`
+- `GET /users/:id`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
@@ -76,9 +75,11 @@ If the token is not of an user with the role admin, a `403` code will be returne
 
 When the token is of an admin user, the response should be an object, containing the searched user.
 <img src='./assets/GET USERS BY ID.png'>
-* `POST /users`
+
+- `POST /users`
 
 The body for this request must have the required fields.
+
 <img src='./assets/POST USERS.png'>
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
@@ -89,11 +90,11 @@ When all fields are sent in the request, and the token is of an admin user, the 
 
 <img src='./assets/PUT USERS REQ.png'>
 
-* `PUT /users/:id`
+- `PUT /users/:id`
 
 The body for this request must have the user fields.
 
-<img src='./assets/PUT USERS RESP.png'>
+<img src='./assets/PUT USERS REQ.png'>
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
@@ -101,9 +102,9 @@ If the token is not of an user with the role admin, a `403` code will be returne
 
 When fields are sent in the request, and the token is of an admin user, the response should be:
 
-<img src='./assets/POST USERS RESP.png'>
+<img src='./assets/PUT USERS RESP.png'>
 
-* `DELETE /users/:id`
+- `DELETE /users/:id`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
@@ -113,24 +114,25 @@ When the token is of an admin user, the response should be:
 
 <img src='./assets/DELETE USERS.png'>
 
-
 `/products`
 
-* `GET /products`
-There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
+- `GET /products`
+  There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
 The response should be a array of objects, containing all products.
+
 <img src='./assets/GET PRODUCTS.png'>
 
-* `GET /products/:id`
-There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
+- `GET /products/:id`
+  There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
 The response should be an object, containing the searched product.
+
 <img src='./assets/GET PRODUCTS by id.png'>
 
-* `POST /products`
+- `POST /products`
 
-The body for this request must have the `name`, `type` and `price` fields. 
+The body for this request must have the `name`, `type` and `price` fields.
 
 <img src='./assets/POST PRODUCTS REQ.png'>
 
@@ -142,7 +144,7 @@ When fields are sent in the request, and the token is of an admin user, the resp
 
 <img src='./assets/POST PRODUCTS RESP.png'>
 
-* `PUT /products/:id`
+- `PUT /products/:id`
 
 The body for this request must have the product fields.
 
@@ -153,9 +155,10 @@ There must be an authorization header, type Bearer with the generated token, or 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
 When fields are sent in the request, and the token is of an admin user, the response should be:
+
 <img src='./assets/PUT PRODUCTS RESP.png'>
 
-* `DELETE /products/:id`
+- `DELETE /products/:id`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
@@ -167,23 +170,41 @@ When the token is of an admin user, the response should be:
 
 `/orders`
 
-* `GET /orders`
+The orders status has 5 options:
+
+`
+pending
+`
+
+`
+canceled
+` 
+
+`
+delivering
+` 
+
+`
+delivered
+` 
+
+- `GET /orders`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
 The response should be a array of objects, containing all orders.
 <img src='./assets/GET ORDERS.png'>
 
-* `GET /orders/:id`
+- `GET /orders/:id`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
 The response should be an object, containing the searched order.
 <img src='./assets/GET ORDERS BY ID.png'>
 
-* `POST /orders`
+- `POST /orders`
 
-The body for this request must have the `userId` and `products` fields. 
+The body for this request must have the `userId` and `products` fields.
 
 <img src='./assets/POST ORDERS REQ.png'>
 
@@ -193,9 +214,9 @@ When fields are sent in the request, and the token is of an authenticated user, 
 
 <img src='./assets/POST ORDERS RESP.png'>
 
-* `PUT /orders/:id`
+- `PUT /orders/:id`
 
-The body for this request should have the orders fields. 
+The body for this request should have the orders fields.
 
 <img src='./assets/PUT ORDERS REQ.png'>
 
@@ -205,7 +226,7 @@ When fields are sent in the request, and the token is of an authenticated user, 
 
 <img src='./assets/PUT ORDERS RESP.png'>
 
-* `DELETE /orders/:id`
+- `DELETE /orders/:id`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
