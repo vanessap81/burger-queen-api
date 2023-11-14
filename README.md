@@ -53,7 +53,8 @@ The request for this route must send an object containing the fields:
 
 <img src='./assets/POST LOGIN REQ.png'>
 
-The response should be:
+The response should be a code `200`.
+
 <img src='./assets/POST LOGIN RESP.png'>
 
 `/users`
@@ -64,7 +65,8 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When the token is of an admin user, the response should be a array of objects, containing all users.
+When the token is of an admin user, the response should be a array of objects, containing all users, with the code `200`.
+
 <img src='./assets/GET USERS.png'>
 
 - `GET /users/:id`
@@ -73,7 +75,8 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When the token is of an admin user, the response should be an object, containing the searched user.
+When the token is of an admin user, the response should be an object, containing the searched user, with the code `200`.
+
 <img src='./assets/GET USERS BY ID.png'>
 
 - `POST /users`
@@ -86,7 +89,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When all fields are sent in the request, and the token is of an admin user, the response should be:
+When all fields are sent in the request, and the token is of an admin user, the response should be a code `201`;
 
 <img src='./assets/PUT USERS REQ.png'>
 
@@ -100,7 +103,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When fields are sent in the request, and the token is of an admin user, the response should be:
+When fields are sent in the request, and the token is of an admin user, the response should be a code `200`;
 
 <img src='./assets/PUT USERS RESP.png'>
 
@@ -110,7 +113,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When the token is of an admin user, the response should be:
+When the token is of an admin user, the response should be a code `200`;
 
 <img src='./assets/DELETE USERS.png'>
 
@@ -119,16 +122,16 @@ When the token is of an admin user, the response should be:
 - `GET /products`
   There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
-The response should be a array of objects, containing all products.
+The response should be a array of objects, containing all products with the code `200`.
 
 <img src='./assets/GET PRODUCTS.png'>
 
 - `GET /products/:id`
   There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
-The response should be an object, containing the searched product.
+The response should be an object, containing the searched product with the code `200`.
 
-<img src='./assets/GET PRODUCTS by id.png'>
+<img src='./assets/GET PRODUCTS BY id.png'>
 
 - `POST /products`
 
@@ -140,7 +143,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When fields are sent in the request, and the token is of an admin user, the response should be:
+When fields are sent in the request, and the token is of an admin user, the response should be a code `201`.
 
 <img src='./assets/POST PRODUCTS RESP.png'>
 
@@ -154,7 +157,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When fields are sent in the request, and the token is of an admin user, the response should be:
+When fields are sent in the request, and the token is of an admin user, the response should be a code `200`.
 
 <img src='./assets/PUT PRODUCTS RESP.png'>
 
@@ -164,13 +167,20 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When the token is of an admin user, the response should be:
+When the token is of an admin user, the response should be a code `200`.
 
 <img src='./assets/DELETE USERS.png'>
 
 `/orders`
 
-The orders status has 5 options:
+- `GET /orders`
+
+There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
+
+The response should be a array of objects, containing all orders, code `200`.
+<img src='./assets/GET ORDERS.png'>
+
+The `status` field has 5 options:
 
 `
 pending
@@ -188,18 +198,12 @@ delivering
 delivered
 ` 
 
-- `GET /orders`
-
-There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
-
-The response should be a array of objects, containing all orders.
-<img src='./assets/GET ORDERS.png'>
-
 - `GET /orders/:id`
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
-The response should be an object, containing the searched order.
+The response should be an object, containing the searched order, with the code `200`.
+
 <img src='./assets/GET ORDERS BY ID.png'>
 
 - `POST /orders`
@@ -210,7 +214,7 @@ The body for this request must have the `userId` and `products` fields.
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
-When fields are sent in the request, and the token is of an authenticated user, the response should be:
+When fields are sent in the request, and the token is of an authenticated user, the response should be a code `201`.
 
 <img src='./assets/POST ORDERS RESP.png'>
 
@@ -222,7 +226,7 @@ The body for this request should have the orders fields.
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
-When fields are sent in the request, and the token is of an authenticated user, the response should be:
+When fields are sent in the request, and the token is of an authenticated user, the response should be a code `200`
 
 <img src='./assets/PUT ORDERS RESP.png'>
 
@@ -230,7 +234,7 @@ When fields are sent in the request, and the token is of an authenticated user, 
 
 There must be an authorization header, type Bearer with the generated token, or an `401` code will be returned.
 
-When the token is of an admin user, the response should be:
+When the token is of an admin user, the response should be a code `200`
 
 <img src='./assets/DELETE USERS.png'>
 
