@@ -12,7 +12,9 @@ const ordersSchema = new mongoose.Schema(
     },
     products: [
       {
-        id: {
+        _id: {
+        },
+        productId: {
           type: String,
           allowNull: false,
         },

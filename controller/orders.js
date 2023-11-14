@@ -21,6 +21,10 @@ const createOrder = async (req, resp) => {
     });
 
     const newOrder = await order.save();
+
+    newOrder.products.forEach((product) => {
+      product._id = undefined;
+    });
     resp.status(201).json({ newOrder });
   } catch (error) {
     resp.status(500).json({ error: 'Internal Server Error' });
@@ -35,6 +39,9 @@ const getOrderById = async (req, resp) => {
     if (!order) {
       resp.status(404).json({ error: 'Order not found' });
     } else {
+      order.products.forEach((product) => {
+        product._id = undefined;
+      });
       resp.json(order);
     }
   } catch (error) {
@@ -49,6 +56,11 @@ const getOrderById = async (req, resp) => {
 const getOrders = async (req, resp) => {
   try {
     const orders = await Orders.find();
+    orders.forEach((order) => {
+      order.products.forEach((product) => {
+        product._id = undefined;
+      });
+    });
     resp.json(orders);
   } catch (error) {
     resp.status(500).json({ error: 'Internal Server Error' });
@@ -78,6 +90,9 @@ const updateOrder = async (req, resp) => {
     if (!updatedOrder) {
       resp.status(404).json({ error: 'Order not found' });
     } else {
+      updatedOrder.products.forEach((product) => {
+        product._id = undefined;
+      });
       resp.json({ updatedOrder });
     }
   } catch (error) {
