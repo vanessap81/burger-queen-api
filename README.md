@@ -89,7 +89,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When all fields are sent in the request, and the token is of an admin user, the response should be a code `201`;
+When all fields are sent in the request, and the token is of an admin user, the response should be a code `201`.
 
 <img src='./assets/PUT USERS REQ.png'>
 
@@ -103,7 +103,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When fields are sent in the request, and the token is of an admin user, the response should be a code `200`;
+When fields are sent in the request, and the token is of an admin user, the response should be a code `200`.
 
 <img src='./assets/PUT USERS RESP.png'>
 
@@ -113,7 +113,7 @@ There must be an authorization header, type Bearer with the generated token, or 
 
 If the token is not of an user with the role admin, a `403` code will be returned.
 
-When the token is of an admin user, the response should be a code `200`;
+When the token is of an admin user, the response should be a code `200`.
 
 <img src='./assets/DELETE USERS.png'>
 
@@ -131,7 +131,7 @@ The response should be a array of objects, containing all products with the code
 
 The response should be an object, containing the searched product with the code `200`.
 
-<img src='./assets/GET PRODUCTS BY id.png'>
+<img src='./assets/GET PRODUCTS BY ID.png'>
 
 - `POST /products`
 
