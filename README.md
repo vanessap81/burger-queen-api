@@ -182,21 +182,13 @@ The response should be a array of objects, containing all orders, code `200`.
 
 The `status` field has 5 options:
 
-`
-pending
-`
+`pending`
 
-`
-canceled
-` 
+`canceled`
 
-`
-delivering
-` 
+`delivering`
 
-`
-delivered
-` 
+`delivered`
 
 - `GET /orders/:id`
 
