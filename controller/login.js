@@ -37,6 +37,7 @@ const login = async (req, resp) => {
 
     resp.status(200).json({
       acessToken: token,
+      userId: user._id,
       email: user.email,
       role: user.role,
       name: user.name,
