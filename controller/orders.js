@@ -1,16 +1,13 @@
-const Orders = require('../models/Orders');
+const Orders = require("../models/Orders");
 
 const createOrder = async (req, resp) => {
   try {
-    const {
-      userId,
-      client,
-      products,
-      status,
-    } = req.body;
+    const { userId, client, products, status, table } = req.body;
 
-    if (!userId || !products || !client) {
-      return resp.status(400).json({ error: 'Fields userId, products and client are required' });
+    if (!userId || !products || !client || !table) {
+      return resp
+        .status(400)
+        .json({ error: "Fields userId, products and client are required" });
     }
 
     const order = new Orders({
@@ -18,6 +15,7 @@ const createOrder = async (req, resp) => {
       client,
       products,
       status,
+      table,
     });
 
     const newOrder = await order.save();
@@ -27,7 +25,7 @@ const createOrder = async (req, resp) => {
     });
     resp.status(201).json({ newOrder });
   } catch (error) {
-    resp.status(500).json({ error: 'Internal Server Error' });
+    resp.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -37,7 +35,7 @@ const getOrderById = async (req, resp) => {
     const order = await Orders.findById(orderId);
 
     if (!order) {
-      resp.status(404).json({ error: 'Order not found' });
+      resp.status(404).json({ error: "Order not found" });
     } else {
       order.products.forEach((product) => {
         product._id = undefined;
@@ -46,9 +44,9 @@ const getOrderById = async (req, resp) => {
     }
   } catch (error) {
     if (error.reason) {
-      resp.status(404).json({ error: 'Order not found' });
+      resp.status(404).json({ error: "Order not found" });
     } else {
-      resp.status(500).json({ error: 'Internal Server Error' });
+      resp.status(500).json({ error: "Internal Server Error" });
     }
   }
 };
@@ -63,19 +61,14 @@ const getOrders = async (req, resp) => {
     });
     resp.json(orders);
   } catch (error) {
-    resp.status(500).json({ error: 'Internal Server Error' });
+    resp.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 const updateOrder = async (req, resp) => {
   try {
     const orderId = req.params.id;
-    const {
-      userId,
-      client,
-      products,
-      status,
-    } = req.body;
+    const { userId, client, products, status, table } = req.body;
     const updatedOrder = await Orders.findByIdAndUpdate(
       orderId,
       {
@@ -83,12 +76,13 @@ const updateOrder = async (req, resp) => {
         client,
         products,
         status,
+        table,
       },
-      { new: true },
+      { new: true }
     );
 
     if (!updatedOrder) {
-      resp.status(404).json({ error: 'Order not found' });
+      resp.status(404).json({ error: "Order not found" });
     } else {
       updatedOrder.products.forEach((product) => {
         product._id = undefined;
@@ -97,9 +91,9 @@ const updateOrder = async (req, resp) => {
     }
   } catch (error) {
     if (error.reason) {
-      resp.status(404).json({ error: 'Order not found' });
+      resp.status(404).json({ error: "Order not found" });
     } else {
-      resp.status(500).json({ error: 'Internal Server Error' });
+      resp.status(500).json({ error: "Internal Server Error" });
     }
   }
 };
@@ -110,15 +104,15 @@ const deleteOrder = async (req, resp) => {
     const deletedOrder = await Orders.findByIdAndDelete(orderId);
 
     if (!deletedOrder) {
-      resp.status(404).json({ error: 'Order not found' });
+      resp.status(404).json({ error: "Order not found" });
     } else {
-      resp.status(200).json({ message: 'Successfully deleted' });
+      resp.status(200).json({ message: "Successfully deleted" });
     }
   } catch (error) {
     if (error.reason) {
-      resp.status(404).json({ error: 'Order not found' });
+      resp.status(404).json({ error: "Order not found" });
     } else {
-      resp.status(500).json({ error: 'Internal Server Error' });
+      resp.status(500).json({ error: "Internal Server Error" });
     }
   }
 };
